@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>项目管理</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>项目管理</h2>
+            <a th:href="@{/projects/create}" class="btn btn-primary">新建项目</a>
+        </div>
+        <div class="filter-bar">
+            <a th:href="@{/projects}" th:classappend="${currentStatus == null} ? 'active'" class="filter-btn">全部</a>
+            <a th:href="@{/projects(status='ACTIVE')}" th:classappend="${currentStatus == 'ACTIVE'} ? 'active'" class="filter-btn">进行中</a>
+            <a th:href="@{/projects(status='COMPLETED')}" th:classappend="${currentStatus == 'COMPLETED'} ? 'active'" class="filter-btn">已完成</a>
+            <a th:href="@{/projects(status='ON_HOLD')}" th:classappend="${currentStatus == 'ON_HOLD'} ? 'active'" class="filter-btn">暂停</a>
+            <a th:href="@{/projects(status='CANCELLED')}" th:classappend="${currentStatus == 'CANCELLED'} ? 'active'" class="filter-btn">已取消</a>
+        </div>
+        <div class="card-list">
+            <div th:if="${#lists.isEmpty(projects)}" class="empty-state">
+                <p>暂无项目</p>
+            </div>
+            <div th:each="project : ${projects}" class="card">
+                <div class="card-header">
+                    <h3><a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.name}"></a></h3>
+                    <span th:class="'status-badge status-' + ${project.status}" th:text="${project.status}"></span>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc" th:text="${#strings.abbreviate(project.description, 100)}"></p>
+                    <div class="card-meta">
+                        <span th:text="${project.department}"></span>
+                        <span>负责人：<span th:text="${project.manager.displayName}"></span></span>
+                        <span th:if="${project.startDate}" th:text="${#temporals.format(project.startDate, 'yyyy-MM-dd')}"></span>
+                        <span th:if="${project.endDate}">至 <span th:text="${#temporals.format(project.endDate, 'yyyy-MM-dd')}"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

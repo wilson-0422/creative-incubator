@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>评审详情</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>评审详情</h2>
+            <a th:href="@{/reviews}" class="btn btn-secondary">返回列表</a>
+        </div>
+        <div class="detail-card">
+            <div class="detail-header">
+                <h3 th:text="${review.proposal.title}"></h3>
+                <span th:class="'status-badge status-' + ${review.result}" th:text="${review.result}"></span>
+            </div>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <label>评审人：</label>
+                    <span th:text="${review.reviewer.displayName}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>评审人部门：</label>
+                    <span th:text="${review.reviewer.department}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>评分：</label>
+                    <span th:text="${review.score}"></span>/100
+                </div>
+                <div class="detail-row">
+                    <label>评审时间：</label>
+                    <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+                <div class="detail-row full">
+                    <label>评审意见：</label>
+                    <div class="detail-content" th:text="${review.comment}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title">
+            <h3>关联提报</h3>
+        </div>
+        <div class="detail-card">
+            <div class="detail-body">
+                <div class="detail-row">
+                    <label>提报标题：</label>
+                    <a th:href="@{/proposals/{id}(id=${review.proposal.id})}" th:text="${review.proposal.title}"></a>
+                </div>
+                <div class="detail-row">
+                    <label>提报部门：</label>
+                    <span th:text="${review.proposal.department}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>提报人：</label>
+                    <span th:text="${review.proposal.proposer.displayName}"></span>
+                </div>
+                <div class="detail-row full">
+                    <label>提报描述：</label>
+                    <div class="detail-content" th:text="${review.proposal.description}"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

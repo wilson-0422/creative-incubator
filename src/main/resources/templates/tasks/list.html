@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>任务中心</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>任务中心</h2>
+            <a th:href="@{/tasks/create}" class="btn btn-primary">新建任务</a>
+        </div>
+        <div class="filter-bar">
+            <a th:href="@{/tasks}" th:classappend="${currentProjectId == null} ? 'active'" class="filter-btn">全部</a>
+            <a th:each="proj : ${projects}" th:href="@{/tasks(projectId=${proj.id})}"
+               th:classappend="${currentProjectId == proj.id} ? 'active'" class="filter-btn"
+               th:text="${proj.name}"></a>
+        </div>
+        <div class="card-list">
+            <div th:if="${#lists.isEmpty(tasks)}" class="empty-state">
+                <p>暂无任务</p>
+            </div>
+            <div th:each="task : ${tasks}" class="card">
+                <div class="card-header">
+                    <h3><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a></h3>
+                    <span th:class="'status-badge status-' + ${task.status}" th:text="${task.status}"></span>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc" th:if="${task.description}" th:text="${#strings.abbreviate(task.description, 80)}"></p>
+                    <div class="card-meta">
+                        <span>项目：<span th:text="${task.project.name}"></span></span>
+                        <span th:if="${task.assignee}">负责人：<span th:text="${task.assignee.displayName}"></span></span>
+                        <span th:if="${task.dueDate}" th:text="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

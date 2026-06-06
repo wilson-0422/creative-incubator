@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>新建项目</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>新建项目</h2>
+            <a th:href="@{/projects}" class="btn btn-secondary">返回列表</a>
+        </div>
+        <div class="form-card">
+            <form th:action="@{/projects}" th:object="${project}" method="post">
+                <div class="form-group">
+                    <label for="name">项目名称</label>
+                    <input type="text" id="name" th:field="*{name}" required placeholder="请输入项目名称">
+                </div>
+                <div class="form-group">
+                    <label for="description">项目描述</label>
+                    <textarea id="description" th:field="*{description}" rows="6" required placeholder="请输入项目描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="department">所属部门</label>
+                    <select id="department" th:field="*{department}" required>
+                        <option value="">请选择部门</option>
+                        <option value="产品研发部">产品研发部</option>
+                        <option value="市场营销部">市场营销部</option>
+                        <option value="技术架构部">技术架构部</option>
+                        <option value="用户体验部">用户体验部</option>
+                        <option value="数据分析部">数据分析部</option>
+                        <option value="运营管理部">运营管理部</option>
+                        <option value="信息技术部">信息技术部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">开始日期</label>
+                    <input type="date" id="startDate" th:field="*{startDate}">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">结束日期</label>
+                    <input type="date" id="endDate" th:field="*{endDate}">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">创建项目</button>
+                    <a th:href="@{/projects}" class="btn btn-secondary">取消</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

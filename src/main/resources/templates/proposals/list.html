@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>创意提报</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>创意提报</h2>
+            <a th:href="@{/proposals/create}" class="btn btn-primary">新建提报</a>
+        </div>
+        <div class="filter-bar">
+            <a th:href="@{/proposals}" th:classappend="${currentStatus == null} ? 'active'" class="filter-btn">全部</a>
+            <a th:href="@{/proposals(status='DRAFT')}" th:classappend="${currentStatus == 'DRAFT'} ? 'active'" class="filter-btn">草稿</a>
+            <a th:href="@{/proposals(status='SUBMITTED')}" th:classappend="${currentStatus == 'SUBMITTED'} ? 'active'" class="filter-btn">已提交</a>
+            <a th:href="@{/proposals(status='UNDER_REVIEW')}" th:classappend="${currentStatus == 'UNDER_REVIEW'} ? 'active'" class="filter-btn">评审中</a>
+            <a th:href="@{/proposals(status='APPROVED')}" th:classappend="${currentStatus == 'APPROVED'} ? 'active'" class="filter-btn">已通过</a>
+            <a th:href="@{/proposals(status='REJECTED')}" th:classappend="${currentStatus == 'REJECTED'} ? 'active'" class="filter-btn">已驳回</a>
+        </div>
+        <div class="card-list">
+            <div th:if="${#lists.isEmpty(proposals)}" class="empty-state">
+                <p>暂无创意提报</p>
+            </div>
+            <div th:each="proposal : ${proposals}" class="card">
+                <div class="card-header">
+                    <h3><a th:href="@{/proposals/{id}(id=${proposal.id})}" th:text="${proposal.title}"></a></h3>
+                    <span th:class="'status-badge status-' + ${proposal.status}" th:text="${proposal.status}"></span>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc" th:text="${#strings.abbreviate(proposal.description, 100)}"></p>
+                    <div class="card-meta">
+                        <span th:text="${proposal.department}"></span>
+                        <span th:text="${proposal.category}"></span>
+                        <span th:text="${proposal.proposer.displayName}"></span>
+                        <span th:text="${#temporals.format(proposal.createdAt, 'yyyy-MM-dd')}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

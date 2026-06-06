@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<header th:fragment="header">
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a th:href="@{/}">创意孵化平台</a>
+        </div>
+        <div class="nav-links" sec:authorize="isAuthenticated()">
+            <a th:href="@{/dashboard}" th:classappend="${#request.requestURI.contains('/dashboard')} ? 'active'">仪表盘</a>
+            <a th:href="@{/proposals}" th:classappend="${#request.requestURI.contains('/proposals')} ? 'active'">创意提报</a>
+            <a th:href="@{/reviews}" th:classappend="${#request.requestURI.contains('/reviews')} ? 'active'">评审管理</a>
+            <a th:href="@{/projects}" th:classappend="${#request.requestURI.contains('/projects')} ? 'active'">项目管理</a>
+            <a th:href="@{/tasks}" th:classappend="${#request.requestURI.contains('/tasks')} ? 'active'">任务中心</a>
+            <a th:href="@{/archives}" th:classappend="${#request.requestURI.contains('/archives')} ? 'active'">项目归档</a>
+        </div>
+        <div class="nav-auth">
+            <span sec:authorize="isAuthenticated()" class="nav-user">
+                <span sec:authentication="name"></span>
+            </span>
+            <a sec:authorize="isAuthenticated()" th:href="@{/auth/logout}" class="btn btn-sm">退出</a>
+            <a sec:authorize="!isAuthenticated()" th:href="@{/auth/login}" class="btn btn-sm btn-primary">登录</a>
+        </div>
+    </nav>
+</header>
+</html>

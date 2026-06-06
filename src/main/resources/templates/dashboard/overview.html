@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>仪表盘</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>仪表盘</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" th:text="${stats.totalProposals}"></div>
+                <div class="stat-label">创意提报</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${stats.pendingReviews}"></div>
+                <div class="stat-label">待评审</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${stats.activeProjects}"></div>
+                <div class="stat-label">进行中项目</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${stats.completedTasks}"></div>
+                <div class="stat-label">已完成任务</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${stats.archivedProjects}"></div>
+                <div class="stat-label">已归档项目</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${stats.totalUsers}"></div>
+                <div class="stat-label">平台用户</div>
+            </div>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dashboard-section">
+                <div class="section-title">
+                    <h3>最近提报</h3>
+                    <a th:href="@{/proposals}" class="btn btn-sm btn-secondary">查看全部</a>
+                </div>
+                <div class="card-list">
+                    <div th:each="proposal : ${recentProposals}" class="card card-compact">
+                        <div class="card-header">
+                            <a th:href="@{/proposals/{id}(id=${proposal.id})}" th:text="${proposal.title}"></a>
+                            <span th:class="'status-badge status-' + ${proposal.status}" th:text="${proposal.status}"></span>
+                        </div>
+                        <div class="card-meta">
+                            <span th:text="${proposal.proposer.displayName}"></span>
+                            <span th:text="${#temporals.format(proposal.createdAt, 'yyyy-MM-dd')}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-section">
+                <div class="section-title">
+                    <h3>进行中项目</h3>
+                    <a th:href="@{/projects}" class="btn btn-sm btn-secondary">查看全部</a>
+                </div>
+                <div class="card-list">
+                    <div th:each="project : ${activeProjects}" class="card card-compact">
+                        <div class="card-header">
+                            <a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.name}"></a>
+                            <span th:class="'status-badge status-' + ${project.status}" th:text="${project.status}"></span>
+                        </div>
+                        <div class="card-meta">
+                            <span th:text="${project.manager.displayName}"></span>
+                            <span th:text="${project.department}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-section">
+                <div class="section-title">
+                    <h3>待办任务</h3>
+                    <a th:href="@{/tasks}" class="btn btn-sm btn-secondary">查看全部</a>
+                </div>
+                <div class="card-list">
+                    <div th:each="task : ${pendingTasks}" class="card card-compact">
+                        <div class="card-header">
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a>
+                            <span th:class="'status-badge status-' + ${task.status}" th:text="${task.status}"></span>
+                        </div>
+                        <div class="card-meta">
+                            <span th:if="${task.assignee}" th:text="${task.assignee.displayName}"></span>
+                            <span th:text="${task.project.name}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

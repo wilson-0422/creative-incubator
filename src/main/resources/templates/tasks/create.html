@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>新建任务</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>新建任务</h2>
+            <a th:href="@{/tasks}" class="btn btn-secondary">返回列表</a>
+        </div>
+        <div class="form-card">
+            <form th:action="@{/tasks}" th:object="${task}" method="post">
+                <div class="form-group">
+                    <label for="project">所属项目</label>
+                    <select id="project" name="project.id" required>
+                        <option value="">请选择项目</option>
+                        <option th:each="proj : ${projects}" th:value="${proj.id}" th:text="${proj.name}"
+                                th:selected="${task.project != null and task.project.id == proj.id}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="title">任务标题</label>
+                    <input type="text" id="title" name="title" required placeholder="请输入任务标题">
+                </div>
+                <div class="form-group">
+                    <label for="description">任务描述</label>
+                    <textarea id="description" name="description" rows="4" placeholder="请输入任务描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="assignee">负责人</label>
+                    <select id="assignee" name="assignee.id">
+                        <option value="">请选择负责人</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.displayName + ' - ' + u.department}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dueDate">截止日期</label>
+                    <input type="date" id="dueDate" name="dueDate">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">创建任务</button>
+                    <a th:href="@{/tasks}" class="btn btn-secondary">取消</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

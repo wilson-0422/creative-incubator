@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>新建提报</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>新建创意提报</h2>
+            <a th:href="@{/proposals}" class="btn btn-secondary">返回列表</a>
+        </div>
+        <div class="form-card">
+            <form th:action="@{/proposals}" th:object="${proposal}" method="post">
+                <div class="form-group">
+                    <label for="title">创意标题</label>
+                    <input type="text" id="title" th:field="*{title}" required placeholder="请输入创意标题">
+                </div>
+                <div class="form-group">
+                    <label for="category">创意类别</label>
+                    <select id="category" th:field="*{category}" required>
+                        <option value="">请选择类别</option>
+                        <option value="NEW_PRODUCT">新品立项</option>
+                        <option value="PROCESS_IMPROVEMENT">流程优化</option>
+                        <option value="MARKETING">营销创意</option>
+                        <option value="TECHNOLOGY">技术创新</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">创意描述</label>
+                    <textarea id="description" th:field="*{description}" rows="8" required placeholder="请详细描述您的创意方案"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="status">保存方式</label>
+                    <select id="status" th:field="*{status}">
+                        <option value="DRAFT">保存为草稿</option>
+                        <option value="SUBMITTED">直接提交</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                    <a th:href="@{/proposals}" class="btn btn-secondary">取消</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

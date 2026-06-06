@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>编辑项目</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>编辑项目</h2>
+            <a th:href="@{/projects/{id}(id=${project.id})}" class="btn btn-secondary">返回详情</a>
+        </div>
+        <div class="form-card">
+            <form th:action="@{/projects/{id}(id=${project.id})}" th:object="${project}" method="post">
+                <div class="form-group">
+                    <label for="name">项目名称</label>
+                    <input type="text" id="name" th:field="*{name}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">项目描述</label>
+                    <textarea id="description" th:field="*{description}" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="status">项目状态</label>
+                    <select id="status" th:field="*{status}" required>
+                        <option value="ACTIVE">进行中</option>
+                        <option value="COMPLETED">已完成</option>
+                        <option value="ON_HOLD">暂停</option>
+                        <option value="CANCELLED">已取消</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">开始日期</label>
+                    <input type="date" id="startDate" th:field="*{startDate}">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">结束日期</label>
+                    <input type="date" id="endDate" th:field="*{endDate}">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                    <a th:href="@{/projects/{id}(id=${project.id})}" class="btn btn-secondary">取消</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

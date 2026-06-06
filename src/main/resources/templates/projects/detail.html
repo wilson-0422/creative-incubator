@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>项目详情</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2 th:text="${project.name}"></h2>
+            <div class="page-actions">
+                <a th:href="@{/projects/{id}/edit(id=${project.id})}" class="btn btn-secondary">编辑</a>
+                <a th:href="@{/projects}" class="btn btn-secondary">返回列表</a>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-header">
+                <h3 th:text="${project.name}"></h3>
+                <span th:class="'status-badge status-' + ${project.status}" th:text="${project.status}"></span>
+            </div>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <label>所属部门：</label>
+                    <span th:text="${project.department}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>项目负责人：</label>
+                    <span th:text="${project.manager.displayName}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>开始日期：</label>
+                    <span th:text="${project.startDate != null ? #temporals.format(project.startDate, 'yyyy-MM-dd') : '未设定'}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>结束日期：</label>
+                    <span th:text="${project.endDate != null ? #temporals.format(project.endDate, 'yyyy-MM-dd') : '未设定'}"></span>
+                </div>
+                <div th:if="${project.proposal != null}" class="detail-row">
+                    <label>关联提报：</label>
+                    <a th:href="@{/proposals/{id}(id=${project.proposal.id})}" th:text="${project.proposal.title}"></a>
+                </div>
+                <div class="detail-row full">
+                    <label>项目描述：</label>
+                    <div class="detail-content" th:text="${project.description}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title">
+            <h3>项目任务</h3>
+            <a th:href="@{/tasks/create(projectId=${project.id})}" class="btn btn-sm btn-primary">添加任务</a>
+        </div>
+        <div class="task-list">
+            <div th:if="${#lists.isEmpty(project.tasks)}" class="empty-state">
+                <p>暂无任务</p>
+            </div>
+            <div th:each="task : ${project.tasks}" class="task-item">
+                <div class="task-info">
+                    <span th:class="'status-badge status-' + ${task.status}" th:text="${task.status}"></span>
+                    <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a>
+                </div>
+                <div class="task-meta">
+                    <span th:if="${task.assignee}" th:text="${task.assignee.displayName}"></span>
+                    <span th:if="${task.dueDate}" th:text="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"></span>
+                </div>
+            </div>
+        </div>
+        <div th:if="${project.status == 'ACTIVE'}" class="section-title" style="margin-top: 24px;">
+            <h3>项目归档</h3>
+        </div>
+        <form th:if="${project.status == 'ACTIVE'}" th:action="@{/archives/project/{projectId}(projectId=${project.id})}" method="post">
+            <div class="form-group">
+                <label for="summary">归档总结</label>
+                <textarea id="summary" name="summary" rows="4" required placeholder="请输入项目归档总结"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="return confirm('确认归档此项目？')">归档项目</button>
+        </form>
+    </main>
+</body>
+</html>

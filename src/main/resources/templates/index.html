@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>首页</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <section class="hero">
+            <h1>跨部门创意立项协作平台</h1>
+            <p>激发创意，协同协作，推动创新落地</p>
+            <div class="hero-actions">
+                <a th:href="@{/auth/login}" class="btn btn-primary">登录系统</a>
+                <a th:href="@{/auth/register}" class="btn btn-secondary">注册账号</a>
+            </div>
+        </section>
+        <section class="features">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>创意提报</h3>
+                    <p>便捷的创意提报流程，支持草稿保存和多级审批</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>评审流转</h3>
+                    <p>多维度评审机制，评分与评论结合，确保创意质量</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>落地跟进</h3>
+                    <p>项目全生命周期管理，任务分配与进度追踪</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>沉淀归档</h3>
+                    <p>项目成果沉淀归档，知识经验持续积累</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

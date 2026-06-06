@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>归档详情</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>归档详情</h2>
+            <a th:href="@{/archives}" class="btn btn-secondary">返回列表</a>
+        </div>
+        <div class="detail-card">
+            <div class="detail-header">
+                <h3 th:text="${archive.name}"></h3>
+                <span class="status-badge status-ARCHIVED">已归档</span>
+            </div>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <label>所属部门：</label>
+                    <span th:text="${archive.department}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>归档时间：</label>
+                    <span th:text="${#temporals.format(archive.archivedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+                <div th:if="${archive.project != null}" class="detail-row">
+                    <label>关联项目：</label>
+                    <a th:href="@{/projects/{id}(id=${archive.project.id})}" th:text="${archive.project.name}"></a>
+                </div>
+                <div class="detail-row full">
+                    <label>归档总结：</label>
+                    <div class="detail-content" th:text="${archive.summary}"></div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${archive.project != null}" class="section-title">
+            <h3>项目信息</h3>
+        </div>
+        <div th:if="${archive.project != null}" class="detail-card">
+            <div class="detail-body">
+                <div class="detail-row">
+                    <label>项目名称：</label>
+                    <span th:text="${archive.project.name}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>项目负责人：</label>
+                    <span th:text="${archive.project.manager.displayName}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>项目周期：</label>
+                    <span th:text="${archive.project.startDate != null ? #temporals.format(archive.project.startDate, 'yyyy-MM-dd') : ''}"></span>
+                    <span> 至 </span>
+                    <span th:text="${archive.project.endDate != null ? #temporals.format(archive.project.endDate, 'yyyy-MM-dd') : ''}"></span>
+                </div>
+                <div class="detail-row full">
+                    <label>项目描述：</label>
+                    <div class="detail-content" th:text="${archive.project.description}"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

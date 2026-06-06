@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>提报详情</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2>提报详情</h2>
+            <div class="page-actions">
+                <a th:href="@{/proposals/{id}/edit(id=${proposal.id})}" class="btn btn-secondary">编辑</a>
+                <form th:if="${proposal.status == 'DRAFT'}" th:action="@{/proposals/{id}/submit(id=${proposal.id})}" method="post" style="display:inline">
+                    <button type="submit" class="btn btn-primary">提交审核</button>
+                </form>
+                <a th:href="@{/proposals}" class="btn btn-secondary">返回列表</a>
+            </div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-header">
+                <h3 th:text="${proposal.title}"></h3>
+                <span th:class="'status-badge status-' + ${proposal.status}" th:text="${proposal.status}"></span>
+            </div>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <label>提报部门：</label>
+                    <span th:text="${proposal.department}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>创意类别：</label>
+                    <span th:text="${proposal.category}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>提报人：</label>
+                    <span th:text="${proposal.proposer.displayName}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>创建时间：</label>
+                    <span th:text="${#temporals.format(proposal.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>更新时间：</label>
+                    <span th:text="${#temporals.format(proposal.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+                <div class="detail-row full">
+                    <label>创意描述：</label>
+                    <div class="detail-content" th:text="${proposal.description}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title">
+            <h3>评审记录</h3>
+            <a th:if="${proposal.status == 'SUBMITTED' or proposal.status == 'UNDER_REVIEW'}"
+               th:href="@{/reviews/proposal/{proposalId}(proposalId=${proposal.id})}" class="btn btn-sm btn-primary">发起评审</a>
+        </div>
+        <div class="card-list" th:if="${proposal.reviews != null}">
+            <div th:each="review : ${proposal.reviews}" class="card">
+                <div class="card-header">
+                    <span th:text="${review.reviewer.displayName}"></span>
+                    <span th:class="'status-badge status-' + ${review.result}" th:text="${review.result}"></span>
+                </div>
+                <div class="card-body">
+                    <p th:if="${review.score != null}">评分：<strong th:text="${review.score}"></strong>/100</p>
+                    <p th:text="${review.comment}"></p>
+                    <span class="card-meta" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

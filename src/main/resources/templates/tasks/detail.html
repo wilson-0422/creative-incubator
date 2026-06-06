@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>任务详情</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-header">
+            <h2 th:text="${task.title}"></h2>
+            <a th:href="@{/tasks}" class="btn btn-secondary">返回列表</a>
+        </div>
+        <div class="detail-card">
+            <div class="detail-header">
+                <h3 th:text="${task.title}"></h3>
+                <span th:class="'status-badge status-' + ${task.status}" th:text="${task.status}"></span>
+            </div>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <label>所属项目：</label>
+                    <a th:href="@{/projects/{id}(id=${task.project.id})}" th:text="${task.project.name}"></a>
+                </div>
+                <div class="detail-row">
+                    <label>负责人：</label>
+                    <span th:text="${task.assignee != null ? task.assignee.displayName : '未分配'}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>截止日期：</label>
+                    <span th:text="${task.dueDate != null ? #temporals.format(task.dueDate, 'yyyy-MM-dd') : '未设定'}"></span>
+                </div>
+                <div class="detail-row">
+                    <label>创建时间：</label>
+                    <span th:text="${#temporals.format(task.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+                <div class="detail-row full">
+                    <label>任务描述：</label>
+                    <div class="detail-content" th:text="${task.description}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title">
+            <h3>更新状态</h3>
+        </div>
+        <div class="status-actions">
+            <form th:action="@{/tasks/{id}/status(id=${task.id})}" method="post" style="display:inline">
+                <input type="hidden" name="status" value="TODO">
+                <button type="submit" th:class="'btn ' + (${task.status == 'TODO'} ? 'btn-primary' : 'btn-secondary')">待办</button>
+            </form>
+            <form th:action="@{/tasks/{id}/status(id=${task.id})}" method="post" style="display:inline">
+                <input type="hidden" name="status" value="IN_PROGRESS">
+                <button type="submit" th:class="'btn ' + (${task.status == 'IN_PROGRESS'} ? 'btn-primary' : 'btn-secondary')">进行中</button>
+            </form>
+            <form th:action="@{/tasks/{id}/status(id=${task.id})}" method="post" style="display:inline">
+                <input type="hidden" name="status" value="DONE">
+                <button type="submit" th:class="'btn ' + (${task.status == 'DONE'} ? 'btn-primary' : 'btn-secondary')">已完成</button>
+            </form>
+            <form th:action="@{/tasks/{id}/status(id=${task.id})}" method="post" style="display:inline">
+                <input type="hidden" name="status" value="CANCELLED">
+                <button type="submit" th:class="'btn ' + (${task.status == 'CANCELLED'} ? 'btn-primary' : 'btn-secondary')">已取消</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
